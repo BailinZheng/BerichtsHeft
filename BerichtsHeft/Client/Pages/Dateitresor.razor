@@ -44,10 +44,10 @@
 	{
 		DateiInfo.Activities.Remove(activityDel);
 	}
+
 	public  void Change(DateiInfo activityChange)
-	{
-		DateiInfo.Activities.Remove(activityChange);
-		NavigationManager.NavigateTo("activityform");
-	}
-	
+	{		
+		NavigationManager.NavigateTo("activityform/0");
+		//DateiInfo.Activities.Remove(activityChange);
+	}	
 }
