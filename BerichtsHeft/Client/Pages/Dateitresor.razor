@@ -1,0 +1,53 @@
+﻿@page "/dateitresor"
+@using BerichtsHeft.Shared
+@inject NavigationManager NavigationManager
+
+<PageTitle>Dateitresor</PageTitle>
+
+<h4>Dateitresor</h4>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Date</th>
+			<th>Typ</th>
+			<th>HauptText</th>
+			<th>DateBlock</th>
+			<th>Dauert</th>
+			<th>WochenTag</th>
+			<th>Name</th>
+			<th>Fach</th>
+			<th>Löschen</th>
+			<th>Veränden</th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in DateiInfo.Activities)
+		{
+			<tr>
+				<td>@item.DateOfReport</td>
+				<td>@item.AbgabeType</td>
+				<td>@item.HauptText</td>
+				<td>@item.DateBlock</td>
+				<td>@item.Dauertmin</td>
+				<td>@item.WochenTag</td>
+				<td>@item.Name</td>
+				<td>@item.Subject</td>
+				<td><button class="btn btn-danger" @onclick="(() => Delete(item))">löschen</button></td>
+				<td><button class="btn btn-danger" @onclick="(() => Change(item))">veränden</button></td>
+			</tr>
+		}
+	</tbody>
+</table>
+@code {
+	public static void Delete(DateiInfo activityDel)
+	{
+		DateiInfo.Activities.Remove(activityDel);
+	}
+	public  void Change(DateiInfo activityChange)
+	{
+		DateiInfo.Activities.Remove(activityChange);
+		NavigationManager.NavigateTo("activityform");
+	}
+	
+}

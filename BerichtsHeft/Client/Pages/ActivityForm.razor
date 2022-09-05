@@ -1,0 +1,90 @@
+﻿@page "/activityform"
+@using BerichtsHeft.Shared
+
+@inject NavigationManager NavigationManager
+
+<PageTitle>Einreichung Seite</PageTitle>
+
+<h4>Einreichung Seite</h4>
+@if (datei.DateBlock == 0){
+	datei.WochenTag = "Montag";
+	datei.AbgabeType = "eine Woche im Unternehmen";
+	datei.DateBlock = 1;
+	datei.Subject = "LF1";
+}
+
+<EditForm Model="datei">
+	<div class="form-group">
+		<label for="DateOfReport">Meldezeit:</label>
+		<InputDate id="DateOfReport" @bind-Value="datei.DateOfReport" class="form-control"></InputDate>
+	</div>
+
+	<div class="form-group">
+		<label for="Dauertmin">Wie lange hat diese Lektion gedauert?</label>
+		<InputNumber id="Dauertmin" @bind-Value="datei.Dauertmin" class="form-control"></InputNumber> <h5>min</h5>
+	</div>
+
+	<div class="form-group">
+		<label for="HauptText">HauptText</label>
+		<InputText id="HauptText" @bind-Value="datei.HauptText" class="form-control"></InputText>
+	</div>
+
+	<label for="WochenTag">welchen Wochentag ist heute:</label>
+	<br/>
+	<select name="WochenTag" id="WochenTag" @bind="datei.WochenTag">
+		<option>Montag</option>
+		<option>Dienstag</option>
+		<option>Mittwoch</option>
+		<option>Donnerstag</option>
+		<option>Freitag</option>
+	</select>
+	<br/>
+	<label for="DateiType">wählen Sie den Berichtshefttype:</label>
+	<br/>
+	<select name="DateiType" id="DateiType" @bind="datei.AbgabeType">
+		<option>eine Woche im Unternehmen</option>
+		<option>eine Woche in der Schule</option>
+	</select>
+	<br/>
+	<label for="DateBlock">wählen Sie den Block:</label>
+	<br/>
+	<select name="DateBlock" id="DateBlock" @bind="datei.DateBlock">
+		<option>1</option>
+		<option>2</option>
+		<option>3</option>
+		<option>4</option>
+		<option>5</option>
+	</select>
+	<br/>
+	<div class="form-group">
+		<label for="Name">Wie heist du?</label>
+		<InputText id="Name" @bind-Value="datei.Name" class="form-control"></InputText>
+	</div>
+	<br/>
+	<label for="Subject">wählen Sie das Fach:</label>
+	<br/>
+	<select name="Subject" id="Subject" @bind="datei.Subject">
+		<option>LF1</option>
+		<option>LF2</option>
+		<option>LF3</option>
+		<option>LF4</option>
+		<option>LF5</option>
+		<option>DEU</option>
+		<option>ENG</option>
+		<option>Wiso</option>
+	</select>
+
+</EditForm>
+
+<button type="submit" class="btn btn-primary" @onclick="activityanmelden">Abgebe</button>
+
+@code
+{
+	public DateiInfo datei = new DateiInfo();
+
+	public void activityanmelden()
+	{
+		DateiInfo.Activities.Add(datei);
+		NavigationManager.NavigateTo("dateitresor");
+	}
+}
