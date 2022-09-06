@@ -1,4 +1,4 @@
-﻿@page "/activityform/{ActivityIndex}"
+﻿@page "/activityform/{ActivityID}"
 @page "/activityform/"
 @using BerichtsHeft.Shared
 @inherits ActivityFormClass
@@ -77,8 +77,14 @@
 
 </EditForm>
 
-<button type="submit" class="btn btn-primary" @onclick="activityanmelden">Abgebe</button>
-
+@if (ActivityID == null)
+{
+	<button type="submit" class="btn btn-primary" @onclick="activityanmelden">Hinzufügen</button>
+}
+@if (ActivityID != null)
+{
+	<button type="submit" class="btn btn-primary" @onclick="changeanmelden">Fertig</button>
+}
 @code
 {
 
