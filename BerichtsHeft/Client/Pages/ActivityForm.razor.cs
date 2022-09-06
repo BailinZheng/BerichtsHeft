@@ -14,6 +14,7 @@ namespace BerichtsHeft.Client.Pages
         public void activityanmelden()
         {
             DateiInfo.Activities.Add(Datei);
+            
             NavMan.NavigateTo("dateitresor");
         }
         protected override void OnInitialized()
@@ -24,9 +25,11 @@ namespace BerichtsHeft.Client.Pages
             {
                 int index = Convert.ToInt32(ActivityIndex);
                 int count = DateiInfo.Activities.Count;
-                if(Activities>= count)
-                    test
-                Datei = DateiInfo.Activities[index];
+                if (index >= count)
+                {
+                   Console.Write("Diese Seite existiert nicht, bitte fügen Sie zuerst weitere Nachrichten hinzu");
+                }
+                    Datei = DateiInfo.Activities[index];
             }
         }
     }

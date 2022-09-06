@@ -9,6 +9,7 @@
 <table class="table">
 	<thead>
 		<tr>
+			<th>ID</th>
 			<th>Date</th>
 			<th>Typ</th>
 			<th>HauptText</th>
@@ -25,6 +26,7 @@
 		@foreach (var item in DateiInfo.Activities)
 		{
 			<tr>
+				<td>@item.ID</td>
 				<td>@item.DateOfReport</td>
 				<td>@item.AbgabeType</td>
 				<td>@item.HauptText</td>
@@ -47,7 +49,7 @@
 
 	public  void Change(DateiInfo activityChange)
 	{		
-		NavigationManager.NavigateTo("activityform/0");
+		NavigationManager.NavigateTo("activityform/1");
 		//DateiInfo.Activities.Remove(activityChange);
 	}	
 }

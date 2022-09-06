@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace BerichtsHeft.Shared
 {
     public class DateiInfo
-    {   
+    {
+        public int ID = Activities.Count;
         public static List<DateiInfo> Activities { get; private set; } = new List<DateiInfo>();
         public DateTime DateOfReport { get; set; } = DateTime.Now;
         [Range(typeof(bool), "true", "true", ErrorMessage = "Only confirmed users can play!")]
