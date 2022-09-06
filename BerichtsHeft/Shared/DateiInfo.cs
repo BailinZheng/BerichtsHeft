@@ -9,8 +9,19 @@ namespace BerichtsHeft.Shared
 {
     public class DateiInfo
     {
-        public int ID = Activities.Count;
+        public string ID { get; private set; } = Guid.NewGuid().ToString();
         public static List<DateiInfo> Activities { get; private set; } = new List<DateiInfo>();
+        public static DateiInfo GetDateiInfo(string ID)
+        {
+            foreach(DateiInfo dateiinfo in Activities)
+            {
+                if (dateiinfo.ID == ID)
+                {
+                    return dateiinfo;
+                }
+            }
+            return null;
+        }
         public DateTime DateOfReport { get; set; } = DateTime.Now;
         [Range(typeof(bool), "true", "true", ErrorMessage = "Only confirmed users can play!")]
         public string AbgabeType { get; set; }

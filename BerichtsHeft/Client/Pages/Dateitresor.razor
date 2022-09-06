@@ -49,7 +49,7 @@
 
 	public  void Change(DateiInfo activityChange)
 	{		
-		NavigationManager.NavigateTo("activityform/1");
+		NavigationManager.NavigateTo($"activityform/{activityChange.ID}");
 		//DateiInfo.Activities.Remove(activityChange);
 	}	
 }
