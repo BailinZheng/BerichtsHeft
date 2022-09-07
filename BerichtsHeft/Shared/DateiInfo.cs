@@ -11,30 +11,18 @@ namespace BerichtsHeft.Shared
 {
     public class DateiInfo
     {
-        public string ID { get; private set; } = Guid.NewGuid().ToString();        
         private static List<DateiInfo> Activities { get; set; } = new List<DateiInfo>();
-
-
         public static DateiInfo GetDateiInfo(string ID)
         {
-            foreach (DateiInfo dateiinfo in Activities)
+            foreach (DateiInfo dateiInfo in Activities)
             {
-                if (dateiinfo.ID == ID)
+                if (dateiInfo.ID == ID)
                 {
-                    return dateiinfo;
+                    return dateiInfo;
                 }
             }
             return null;
         }
-
-        /// <summary>
-        /// Liefert alle DateiInfo-Objekte, die im Subject das übergebene Pattern haben
-        /// 
-        ///  - Bsp: Pattern = "test" ==> "Ein toller test" wird gefunden
-        /// 
-        /// </summary>
-        /// <param name="subjectPattern">Suchmuster; wenn null ==> alle DateiInfo-Objekte zurück geben</param>
-        /// <returns></returns>
         public static List<DateiInfo> SearchDateiInfos(string subjectPattern = null)
         {
             List<DateiInfo> list = new List<DateiInfo>();
@@ -44,20 +32,17 @@ namespace BerichtsHeft.Shared
                 {
                     list.Add(dateiItem);
                 }
-                else if (dateiItem.Subject.Contains(subjectPattern))
+                else
                 {
-                    list.Add(dateiItem);
+                    if (dateiItem.Subject.Contains(subjectPattern, StringComparison.OrdinalIgnoreCase))
+                    {
+                        list.Add(dateiItem);
+                    }
                 }
-
             }
             return list;
         }
 
-        /// <summary>
-        /// Löscht ein DateiInfo und gibt true zurck, wenn erfolgreich
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public static bool Delete(DateiInfo id)
         {
             if (DateiInfo.Activities.Remove(id))
@@ -67,10 +52,6 @@ namespace BerichtsHeft.Shared
             return false;
         }
 
-        /// <summary>
-        /// Fügt ein DateiInfo-Objekt in die Liste ein
-        /// </summary>
-        /// <param name="dateiInfo"></param>
         public static void Add(DateiInfo dateiInfo)
         {
             DateiInfo.Activities.Add(dateiInfo);
@@ -85,6 +66,7 @@ namespace BerichtsHeft.Shared
         public string WochenTag { get; set; }
         public string Name { get; set; }
         public string Subject { get; set; }
+        public string ID { get; private set; } = Guid.NewGuid().ToString();
 
     }
 }
