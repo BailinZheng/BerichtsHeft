@@ -13,7 +13,7 @@ namespace BerichtsHeft.Client.Pages
 
         public void activityanmelden()
         {
-            DateiInfo.Activities.Add(Datei);
+            DateiInfo.Add(Datei);
             NavMan.NavigateTo("dateitresor");
         }
         public void changeanmelden()

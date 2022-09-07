@@ -6,6 +6,10 @@
 
 <h4>Dateitresor</h4>
 
+<div id="box">
+	<input type="search" name="search" placeholder="Search" @bind-value="SubjectPattern">
+   <div id="search"></div>
+</div>
 <table class="table">
 	<thead>
 		<tr>
@@ -23,7 +27,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in DateiInfo.Activities)
+		@foreach (var item in DateiInfo.SearchDateiInfos(SubjectPattern))
 		{
 			<tr>
 				<td>@item.ID</td>
@@ -35,18 +39,14 @@
 				<td>@item.WochenTag</td>
 				<td>@item.Name</td>
 				<td>@item.Subject</td>
-				<td><button class="btn btn-danger" @onclick="(() => Delete(item))">löschen</button></td>
+				<td><button class="btn btn-danger" @onclick="(() => DateiInfo.Delete(item))">löschen</button></td>
 				<td><button class="btn btn-danger" @onclick="(() => Change(item))">veränden</button></td>
 			</tr>
 		}
 	</tbody>
 </table>
 @code {
-	public static void Delete(DateiInfo activityDel)
-	{
-		DateiInfo.Activities.Remove(activityDel);
-	}
-
+	public string SubjectPattern { get; set; }
 	public  void Change(DateiInfo activityChange)
 	{		
 		NavigationManager.NavigateTo($"activityform/{activityChange.ID}");
