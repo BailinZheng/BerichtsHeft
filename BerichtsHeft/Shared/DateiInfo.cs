@@ -58,7 +58,6 @@ namespace BerichtsHeft.Shared
         }
 
         public DateTime DateOfReport { get; set; } = DateTime.Now;
-        [Range(typeof(bool), "true", "true", ErrorMessage = "Only confirmed users can play!")]
         public string AbgabeType { get; set; }
         public string HauptText { get; set; }
         public int DateBlock { get; set; }
