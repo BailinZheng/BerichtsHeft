@@ -9,11 +9,11 @@ namespace BerichtsHeft.Client.Pages
         public NavigationManager NavMan { get; set; }
         [Parameter]
         public string ActivityID { get; set; }
-        public DateiInfo Datei = new DateiInfo();
+        public Activity Datei = new Activity();
 
         public void activityanmelden()
         {
-            DateiInfo.Add(Datei);
+            Activity.Add(Datei);
             NavMan.NavigateTo("dateitresor");
         }
         public void changeanmelden()
@@ -26,7 +26,7 @@ namespace BerichtsHeft.Client.Pages
 
             if (ActivityID != null)
             {
-                Datei = DateiInfo.GetDateiInfo(ActivityID);
+                Datei = Activity.GetDateiInfo(ActivityID);
             }
         }
     }

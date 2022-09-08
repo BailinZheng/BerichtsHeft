@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace BerichtsHeft.Shared
 {
-    public class DateiInfo
+    public class Activity
     {
-        private static List<DateiInfo> Activities { get; set; } = new List<DateiInfo>();
-        public static DateiInfo GetDateiInfo(string ID)
+        private static List<Activity> Activities { get; set; } = new List<Activity>();
+        public static Activity GetDateiInfo(string ID)
         {
-            foreach (DateiInfo dateiInfo in Activities)
+            foreach (Activity dateiInfo in Activities)
             {
                 if (dateiInfo.ID == ID)
                 {
@@ -23,10 +23,10 @@ namespace BerichtsHeft.Shared
             }
             return null;
         }
-        public static List<DateiInfo> SearchDateiInfos(string subjectPattern = null)
+        public static List<Activity> SearchDateiInfos(string subjectPattern = null)
         {
-            List<DateiInfo> list = new List<DateiInfo>();
-            foreach (DateiInfo dateiItem in Activities)
+            List<Activity> list = new List<Activity>();
+            foreach (Activity dateiItem in Activities)
             {
                 if (subjectPattern == null)
                 {
@@ -43,18 +43,18 @@ namespace BerichtsHeft.Shared
             return list;
         }
 
-        public static bool Delete(DateiInfo id)
+        public static bool Delete(Activity id)
         {
-            if (DateiInfo.Activities.Remove(id))
+            if (Activity.Activities.Remove(id))
             {
                 return true;
             };
             return false;
         }
 
-        public static void Add(DateiInfo dateiInfo)
+        public static void Add(Activity dateiInfo)
         {
-            DateiInfo.Activities.Add(dateiInfo);
+            Activity.Activities.Add(dateiInfo);
         }
 
         public DateTime DateOfReport { get; set; } = DateTime.Now;

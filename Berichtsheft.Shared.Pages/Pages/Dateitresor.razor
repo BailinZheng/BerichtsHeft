@@ -27,7 +27,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in DateiInfo.SearchDateiInfos(SubjectPattern))
+		@foreach (var item in Activity.SearchDateiInfos(SubjectPattern))
 		{
 			<tr>
 				<td>@item.ID</td>
@@ -39,7 +39,7 @@
 				<td>@item.WochenTag</td>
 				<td>@item.Name</td>
 				<td>@item.Subject</td>
-				<td><button class="btn btn-danger" @onclick="(() => DateiInfo.Delete(item))">löschen</button></td>
+				<td><button class="btn btn-danger" @onclick="(() => Activity.Delete(item))">löschen</button></td>
 				<td><button class="btn btn-danger" @onclick="(() => Change(item))">veränden</button></td>
 			</tr>
 		}
@@ -47,7 +47,7 @@
 </table>
 @code {
 	public string SubjectPattern { get; set; }
-	public  void Change(DateiInfo activityChange)
+	public  void Change(Activity activityChange)
 	{		
 		NavigationManager.NavigateTo($"activityform/{activityChange.ID}");
 		//DateiInfo.Activities.Remove(activityChange);
