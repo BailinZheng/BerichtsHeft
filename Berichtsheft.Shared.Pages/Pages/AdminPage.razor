@@ -1,0 +1,13 @@
+﻿@page "/AdminPage"
+
+<h3>AdminPage</h3>
+
+<button type="submit" class="btn btn-primary" @onclick="Craeate">Speichern</button>
+
+@code {
+	private void Craeate()
+	{
+		BerichtsHeft.DataAccess.Db.CreateActivityTable();
+
+	}
+}

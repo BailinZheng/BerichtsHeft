@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BerichtsHeft.Shared", "Beri
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BerichtsHeftServer", "BerichtsHeftServer\BerichtsHeftServer.csproj", "{B590E32B-08ED-440C-8D45-D712D5A2A46E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Berichtsheft.Shared.Pages", "Berichtsheft.Shared.Pages\Berichtsheft.Shared.Pages.csproj", "{05F2B65E-3832-4121-A63E-09185A22D79C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BerichtsHeft.Shared.Pages", "Berichtsheft.Shared.Pages\BerichtsHeft.Shared.Pages.csproj", "{05F2B65E-3832-4121-A63E-09185A22D79C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BerichtsHeft.DataAccess", "BerichtsHeft.DataAccess\BerichtsHeft.DataAccess.csproj", "{55C6A249-D1F8-4A6F-96CA-148F13732E95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{05F2B65E-3832-4121-A63E-09185A22D79C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05F2B65E-3832-4121-A63E-09185A22D79C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05F2B65E-3832-4121-A63E-09185A22D79C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55C6A249-D1F8-4A6F-96CA-148F13732E95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55C6A249-D1F8-4A6F-96CA-148F13732E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55C6A249-D1F8-4A6F-96CA-148F13732E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55C6A249-D1F8-4A6F-96CA-148F13732E95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,7 +7,8 @@
 <PageTitle>Einreichung Seite</PageTitle>
 
 <h4>Einreichung Seite</h4>
-@if (Datei.DateBlock == 0){
+@if (Datei.DateBlock == 0)
+{
 	Datei.WochenTag = "Montag";
 	Datei.AbgabeType = "eine Woche im Unternehmen";
 	Datei.DateBlock = 1;
@@ -31,7 +32,7 @@
 	</div>
 
 	<label for="WochenTag">welchen Wochentag ist heute:</label>
-	<br/>
+	<br />
 	<select name="WochenTag" id="WochenTag" @bind="Datei.WochenTag">
 		<option>Montag</option>
 		<option>Dienstag</option>
@@ -39,16 +40,16 @@
 		<option>Donnerstag</option>
 		<option>Freitag</option>
 	</select>
-	<br/>
+	<br />
 	<label for="DateiType">wählen Sie den Berichtshefttype:</label>
-	<br/>
+	<br />
 	<select name="DateiType" id="DateiType" @bind="Datei.AbgabeType">
 		<option>eine Woche im Unternehmen</option>
 		<option>eine Woche in der Schule</option>
 	</select>
-	<br/>
+	<br />
 	<label for="DateBlock">wählen Sie den Block:</label>
-	<br/>
+	<br />
 	<select name="DateBlock" id="DateBlock" @bind="Datei.DateBlock">
 		<option>1</option>
 		<option>2</option>
@@ -56,14 +57,14 @@
 		<option>4</option>
 		<option>5</option>
 	</select>
-	<br/>
+	<br />
 	<div class="form-group">
 		<label for="Name">Wie heist du?</label>
 		<InputText id="Name" @bind-Value="Datei.Name" class="form-control"></InputText>
 	</div>
-	<br/>
+	<br />
 	<label for="Subject">wählen Sie das Fach:</label>
-	<br/>
+	<br />
 	<select name="Subject" id="Subject" @bind="Datei.Subject">
 		<option>LF1</option>
 		<option>LF2</option>
@@ -74,7 +75,6 @@
 		<option>ENG</option>
 		<option>WISO</option>
 	</select>
-
 </EditForm>
 
 @if (ActivityID == null)
@@ -85,7 +85,17 @@
 {
 	<button type="submit" class="btn btn-primary" @onclick="changeanmelden">Fertig</button>
 }
+
+@if (ActivityID == null)
+{
+	<button type="submit" class="btn btn-primary" @onclick="SaveToDb">Speichern</button>
+}
 @code
 {
-
+	private void SaveToDb()
+	{
+		BerichtsHeft.DataAccess.Db.InsertActivityTable(
+			Datei.ID, Datei.HauptText, Datei.WochenTag, Datei.Name, Datei.Subject,
+			Datei.AbgabeType, Datei.DateBlock, Datei.Dauertmin, Datei.DateOfReport);
+	}
 }

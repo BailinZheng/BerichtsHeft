@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BerichtsHeft.DataAccess\BerichtsHeft.DataAccess.csproj" />
     <ProjectReference Include="..\BerichtsHeft\Shared\BerichtsHeft.Shared.csproj" />
   </ItemGroup>
 

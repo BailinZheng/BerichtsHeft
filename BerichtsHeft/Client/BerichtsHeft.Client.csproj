@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Berichtsheft.Shared.Pages\Berichtsheft.Shared.Pages.csproj" />
+    <ProjectReference Include="..\..\BerichtsHeft.Shared.Pages\BerichtsHeft.Shared.Pages.csproj" />
     <ProjectReference Include="..\Shared\BerichtsHeft.Shared.csproj" />
   </ItemGroup>
 
