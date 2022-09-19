@@ -8,7 +8,7 @@ namespace BerichtsHeft.DataAccess
 
         private static T Execute<T>(Func<SqlCommand, T> func, string sql)
         {
-            SqlConnection db = new(@"Server=SEBASTIAN-NB;Database=berichtsheft;User Id=bailin;Password=codie;");
+            SqlConnection db = new(ConnectionString.Value);
             db.Open();
             SqlCommand cmd = db.CreateCommand();
             cmd.CommandText = sql;

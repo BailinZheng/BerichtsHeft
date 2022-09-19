@@ -10,7 +10,8 @@ using System.Threading.Tasks;
 namespace BerichtsHeft.Shared
 {
     public class Activity
-    {
+    {   
+
         private static List<Activity> Activities { get; set; } = new List<Activity>();
         public static Activity GetDateiInfo(string ID)
         {

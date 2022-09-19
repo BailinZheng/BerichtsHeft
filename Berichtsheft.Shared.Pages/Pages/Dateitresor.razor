@@ -27,26 +27,30 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Activity.SearchDateiInfos(SubjectPattern))
+		@ShowDb
 		{
 			<tr>
-				<td>@item.ID</td>
-				<td>@item.DateOfReport</td>
-				<td>@item.AbgabeType</td>
-				<td>@item.HauptText</td>
-				<td>@item.DateBlock</td>
-				<td>@item.Dauertmin</td>
-				<td>@item.WochenTag</td>
-				<td>@item.Name</td>
-				<td>@item.Subject</td>
-				<td><button class="btn btn-danger" @onclick="(() => Activity.Delete(item))">löschen</button></td>
-				<td><button class="btn btn-danger" @onclick="(() => Change(item))">veränden</button></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				@*<td><button class="btn btn-danger" @onclick="(() => Activity.Delete())">löschen</button></td>
+				<td><button class="btn btn-danger" @onclick="(() => Change())">veränden</button></td>*@
 			</tr>
 		}
 	</tbody>
 </table>
 @code {
 	public string SubjectPattern { get; set; }
+	private void ShowDb()
+	{
+		BerichtsHeft.DataAccess.Db.SelectActivityTable();
+	}
 	public  void Change(Activity activityChange)
 	{		
 		NavigationManager.NavigateTo($"activityform/{activityChange.ID}");
