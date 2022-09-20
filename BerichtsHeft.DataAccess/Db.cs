@@ -111,7 +111,7 @@ namespace BerichtsHeft.DataAccess
         
         {
             sqlCmd.CommandText = SelectSql;
-
+            
             if (fach != null && fach != "")
             {
                 fach = fach.Trim();
