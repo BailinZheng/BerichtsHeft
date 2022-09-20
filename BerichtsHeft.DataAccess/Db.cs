@@ -83,20 +83,46 @@ namespace BerichtsHeft.DataAccess
             FROM
               [dbo].[Activity]
             """);
-
+        public static void SearchActivityTable(string fach) => ExecuteNonQuery($"SELECT[ID], [HauptText], [WochenTag], [Name], [Fach],[AbgabeType], [DateBlock], [Dauertmin], [DateOfReport] FROM[dbo].[Activity] WHERE Fach = '{fach}'");
         private const string SelectSql = @"SELECT
         [ID], [HauptText], [WochenTag], [Name], [Fach],
         [AbgabeType], [DateBlock], [Dauertmin], [DateOfReport]
         FROM
         [dbo].[Activity]";
 
-        public static DataTable GetActivities()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fach"></param>
+        /// <param name="hauptTextPattern">Sucht nach Activities, die diese Zeichenkette enthalten</param>
+        /// <returns></returns>
+        public static DataTable GetActivities(string fach = null, string hauptTextPattern = null)
         {
-            return Execute<DataTable>(GetActivitiesInternal, SelectSql);
+            //return Execute<DataTable>(GetActivitiesInternal, SelectSql);
+
+            return Execute<DataTable>(new Func<SqlCommand, DataTable>((cmd) =>
+            {
+                return GetActivitiesInternal(cmd, fach);
+            }), SelectSql);
         }
 
-        private static DataTable GetActivitiesInternal(SqlCommand sqlCmd)
+        private static DataTable GetActivitiesInternal(SqlCommand sqlCmd, string fach = null, string hauptTextPattern = null)
         {
+            sqlCmd.CommandText = SelectSql;
+
+            if (fach !=null && fach != "")
+            {
+                fach = fach.Trim();
+                sqlCmd.CommandText = sqlCmd.CommandText + " WHERE Fach = @Fach";
+                sqlCmd.Parameters.Add("Fach", SqlDbType.VarChar, 255).Value = fach;                
+            }
+
+            if (hauptTextPattern != null && hauptTextPattern != "")
+            {
+                hauptTextPattern = hauptTextPattern.Trim();
+                sqlCmd.CommandText = sqlCmd.CommandText + " WHERE find_in_set('@Fach', Fach)";
+                sqlCmd.Parameters.Add("HauptText", SqlDbType.VarChar, 255).Value = hauptTextPattern;
+            }
             SqlDataAdapter adp = new SqlDataAdapter(sqlCmd);
             DataTable t = new DataTable();
             adp.Fill(t);

@@ -9,21 +9,12 @@
 <h4>Dateitresor</h4>
 <h5>Anzahl Einträge: @(Db.GetActivitiyCount())</h5>
 
-@*@foreach (DataRow row in Db.GetActivities().Rows)
-{
-	string id = (string)row["ID"];
-	DateTime dateTime = (DateTime)row["DateOfReport"];
-	string abgebetype  = (string)row["AbgabeType"];
-	string haupttext = (string)row["HauptText"];
-	int dauertmin = (int)row["Dauertmin"];
-	int dateblock = (int)row["Dateblock"];
-	string wochentag = (string)row["WochenTag"];
-	string name = (string)row["Name"];
-	string subject = (string)row["Fach"];
-	}
-*@
 <div id="box">
 	<input type="search" name="search" placeholder="Suchen die Fächer" @bind-value="SubjectPattern">
+	<div id="search"></div>
+</div>
+<div id="box">
+	<input type="search" name="search" placeholder="Suchen in dem HauptText" @bind-value="HauptTextPattern">
 	<div id="search"></div>
 </div>
 <table class="table">
@@ -43,7 +34,7 @@
 		</tr>
 	</thead>
 	<tbody>
-			@foreach (DataRow row in Db.GetActivities().Rows)
+			@foreach (DataRow row in Db.GetActivities(SubjectPattern).Rows)
 			{	
 				
 				string id = (string)row["ID"];
@@ -66,16 +57,21 @@
 				<td>@name</td>
 				<td>@subject</td>
 				<td><button class="btn btn-danger" @onclick="(() => BerichtsHeft.DataAccess.Db.DeleteActivityTable(id))">löschen</button></td>
-				<td><button class="btn btn-danger" @onclick="(() => BerichtsHeft.DataAccess.Db.UpdateActivityTable())">veränden</button></td>
+				<td><button class="btn btn-danger" @onclick="(() => Change(id))">veränden</button></td>
 				</tr>
 			}
 	</tbody>
 </table>
 @code {
-	public List<Activity> isql = new List<Activity>();
 	public string SubjectPattern { get; set; }
+	public string HauptTextPattern { get; set; }
 	private void ShowDb()
 	{
 		BerichtsHeft.DataAccess.Db.SelectActivityTable();
+	}
+	public void Change(string id)
+	{
+		NavigationManager.NavigateTo($"activityform/{id}");
+		//DateiInfo.Activities.Remove(activityChange);
 	}
 }
