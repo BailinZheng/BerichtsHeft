@@ -10,11 +10,11 @@
 <h5>Anzahl Einträge: @(Db.GetActivitiyCount())</h5>
 
 <div id="box">
-	<input type="search" name="search" placeholder="Suchen die Fächer" @bind-value="SubjectPattern">
+	<input type="search" name="search" placeholder="Suche die Fächer" @bind-value="SubjectPattern">
 	<div id="search"></div>
 </div>
 <div id="box">
-	<input type="search" name="search" placeholder="Suchen in dem HauptText" @bind-value="HauptTextPattern">
+	<input type="search" name="search" placeholder="Suche der HauptText" @bind-value="HauptTextPattern">
 	<div id="search"></div>
 </div>
 <table class="table">
@@ -34,7 +34,7 @@
 		</tr>
 	</thead>
 	<tbody>
-			@foreach (DataRow row in Db.GetActivities(SubjectPattern).Rows)
+			@foreach (DataRow row in Db.GetActivities(SubjectPattern,HauptTextPattern).Rows)
 			{	
 				
 				string id = (string)row["ID"];

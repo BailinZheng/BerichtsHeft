@@ -83,7 +83,7 @@ namespace BerichtsHeft.DataAccess
             FROM
               [dbo].[Activity]
             """);
-        public static void SearchActivityTable(string fach) => ExecuteNonQuery($"SELECT[ID], [HauptText], [WochenTag], [Name], [Fach],[AbgabeType], [DateBlock], [Dauertmin], [DateOfReport] FROM[dbo].[Activity] WHERE Fach = '{fach}'");
+        
         private const string SelectSql = @"SELECT
         [ID], [HauptText], [WochenTag], [Name], [Fach],
         [AbgabeType], [DateBlock], [Dauertmin], [DateOfReport]
@@ -96,21 +96,23 @@ namespace BerichtsHeft.DataAccess
         /// <param name="fach"></param>
         /// <param name="hauptTextPattern">Sucht nach Activities, die diese Zeichenkette enthalten</param>
         /// <returns></returns>
-        public static DataTable GetActivities(string fach = null, string hauptTextPattern = null)
+        public static DataTable GetActivities(string fach = null, string HauptTextPattern = null)
         {
             //return Execute<DataTable>(GetActivitiesInternal, SelectSql);
 
             return Execute<DataTable>(new Func<SqlCommand, DataTable>((cmd) =>
             {
-                return GetActivitiesInternal(cmd, fach);
+                return GetActivitiesInternal(cmd, fach, HauptTextPattern);
             }), SelectSql);
         }
 
         private static DataTable GetActivitiesInternal(SqlCommand sqlCmd, string fach = null, string hauptTextPattern = null)
+        
+        
         {
             sqlCmd.CommandText = SelectSql;
 
-            if (fach !=null && fach != "")
+            if (fach != null && fach != "")
             {
                 fach = fach.Trim();
                 sqlCmd.CommandText = sqlCmd.CommandText + " WHERE Fach = @Fach";
@@ -119,8 +121,8 @@ namespace BerichtsHeft.DataAccess
 
             if (hauptTextPattern != null && hauptTextPattern != "")
             {
-                hauptTextPattern = hauptTextPattern.Trim();
-                sqlCmd.CommandText = sqlCmd.CommandText + " WHERE find_in_set('@Fach', Fach)";
+                hauptTextPattern = "%" + hauptTextPattern + "%";
+                sqlCmd.CommandText = sqlCmd.CommandText + " WHERE HauptText LIKE @HauptTextPattern";
                 sqlCmd.Parameters.Add("HauptText", SqlDbType.VarChar, 255).Value = hauptTextPattern;
             }
             SqlDataAdapter adp = new SqlDataAdapter(sqlCmd);
