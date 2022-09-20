@@ -67,6 +67,7 @@ namespace BerichtsHeft.Shared
         public string Name { get; set; }
         public string Subject { get; set; }
         public string ID { get; private set; } = Guid.NewGuid().ToString();
+        public string IDs { get; private set; } 
 
     }
 }

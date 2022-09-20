@@ -1,11 +1,29 @@
 ﻿@page "/dateitresor"
+@using BerichtsHeft.DataAccess
 @using BerichtsHeft.Shared
+@using System.Data
 @inject NavigationManager NavigationManager
 
 <PageTitle>Dateitresor</PageTitle>
 
 <h4>Dateitresor</h4>
+<h5>Anzahl Einträge: @(Db.GetActivitiyCount())</h5>
 
+@foreach (DataRow row in Db.GetActivities().Rows)
+{
+
+	string id = (string)row["ID"];
+	int dauerTermin = (int)row["Dauertmin"];
+	int dauerTermin = (int)row["Dauertmin"];
+	int dauerTermin = (int)row["Dauertmin"];
+	int dauerTermin = (int)row["Dauertmin"];
+	int dauerTermin = (int)row["Dauertmin"];
+	int dauerTermin = (int)row["Dauertmin"];
+	int dauerTermin = (int)row["Dauertmin"];
+	int dauerTermin = (int)row["Dauertmin"];
+
+	
+}
 <div id="box">
 	<input type="search" name="search" placeholder="Suchen die Fächer" @bind-value="SubjectPattern">
    <div id="search"></div>
@@ -46,6 +64,7 @@
 	</tbody>
 </table>
 @code {
+	List<Activity> isql = new List<Activity>();
 	public string SubjectPattern { get; set; }
 	private void ShowDb()
 	{
