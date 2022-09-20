@@ -43,9 +43,9 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr>
 			@foreach (DataRow row in Db.GetActivities().Rows)
-			{
+			{	
+				
 				string id = (string)row["ID"];
 				DateTime dateTime = (DateTime)row["DateOfReport"];
 				string abgebetype = (string)row["AbgabeType"];
@@ -55,6 +55,7 @@
 				string wochentag = (string)row["WochenTag"];
 				string name = (string)row["Name"];
 				string subject = (string)row["Fach"];
+				<tr>
 				<td>@id</td>
 				<td>@dateTime</td>
 				<td>@abgebetype</td>
@@ -64,11 +65,10 @@
 				<td>@wochentag</td>
 				<td>@name</td>
 				<td>@subject</td>
-				@*<td><button class="btn btn-danger" @onclick="(() => Activity.Delete())">löschen</button></td>
-			<td><button class="btn btn-danger" @onclick="(() => Change())">veränden</button></td>*@
+				<td><button class="btn btn-danger" @onclick="(() => BerichtsHeft.DataAccess.Db.DeleteActivityTable())">löschen</button></td>
+				<td><button class="btn btn-danger" @onclick="(() => BerichtsHeft.DataAccess.Db.UpdateActivityTable())">veränden</button></td>
+				</tr>
 			}
-		</tr>
-
 	</tbody>
 </table>
 @code {

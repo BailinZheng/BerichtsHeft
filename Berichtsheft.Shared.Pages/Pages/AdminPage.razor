@@ -2,12 +2,11 @@
 
 <h3>AdminPage</h3>
 
-<button type="submit" class="btn btn-primary" @onclick="CreateTable">Speichern</button>
+<button type="submit" class="btn btn-primary" @onclick="CreateTable">Create a new Table</button>
 
 @code {
 	private void CreateTable()
 	{
 		BerichtsHeft.DataAccess.Db.CreateActivityTable();
-
 	}
 }
