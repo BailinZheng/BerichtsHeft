@@ -2,6 +2,7 @@
 @page "/activityform/"
 @using BerichtsHeft.Client.Pages
 @inherits ActivityFormClass
+@inject NavigationManager NavigationManager
 
 
 <PageTitle>Einreichung Seite</PageTitle>
@@ -95,7 +96,8 @@
 	private void SaveToDb()
 	{
 		BerichtsHeft.DataAccess.Db.InsertActivityTable(
-			Datei.ID, Datei.HauptText, Datei.WochenTag, Datei.Name, Datei.Subject,
-			Datei.AbgabeType, Datei.DateBlock, Datei.Dauertmin, Datei.DateOfReport);
+		Datei.ID, Datei.HauptText, Datei.WochenTag, Datei.Name, Datei.Subject,
+		Datei.AbgabeType, Datei.DateBlock, Datei.Dauertmin, Datei.DateOfReport);
+		NavigationManager.NavigateTo($"dateitresor");
 	}
 }
