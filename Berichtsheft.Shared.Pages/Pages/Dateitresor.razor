@@ -65,7 +65,7 @@
 				<td>@wochentag</td>
 				<td>@name</td>
 				<td>@subject</td>
-				<td><button class="btn btn-danger" @onclick="(() => BerichtsHeft.DataAccess.Db.DeleteActivityTable())">löschen</button></td>
+				<td><button class="btn btn-danger" @onclick="(() => BerichtsHeft.DataAccess.Db.DeleteActivityTable(id))">löschen</button></td>
 				<td><button class="btn btn-danger" @onclick="(() => BerichtsHeft.DataAccess.Db.UpdateActivityTable())">veränden</button></td>
 				</tr>
 			}
@@ -77,10 +77,5 @@
 	private void ShowDb()
 	{
 		BerichtsHeft.DataAccess.Db.SelectActivityTable();
-	}
-	public void Change(Activity activityChange)
-	{
-		NavigationManager.NavigateTo($"activityform/{activityChange.ID}");
-		//DateiInfo.Activities.Remove(activityChange);
 	}
 }

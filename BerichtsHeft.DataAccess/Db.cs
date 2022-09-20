@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System;
+using System.Data;
 using System.Data.SqlClient;
 
 namespace BerichtsHeft.DataAccess
@@ -41,12 +42,9 @@ namespace BerichtsHeft.DataAccess
             )
             """);
 
-        public static void DeleteActivityTable() => ExecuteNonQuery("""
-            DELETE FROM [dbo].[Activity]
-                  WHERE <Search Conditions,,>          
-            """);
+        public static void DeleteActivityTable(string id) => ExecuteNonQuery($"DELETE FROM [dbo].[Activity] WHERE ID='{id}'");
 
-        public static void UpdateActivityTable() => ExecuteNonQuery("""
+        public static void UpdateActivityTable(string id) => ExecuteNonQuery("""
             UPDATE [dbo].[Activity]
             SET [ID] = 1,
                 [HauptText] = 2,
@@ -58,10 +56,11 @@ namespace BerichtsHeft.DataAccess
                 [Dauertmin] = 8,
                 [DateOfReport] = 9,
             WHERE <Search Conditions,>
-            """);
+            """
+            /*NavigationManager.NavigateTo($"activityform/{activityChange.ID}");*/);
 
-        public static void InsertActivityTable(string id, string hauptText, string wochenTag, string name, 
-            string fach, string abgabeType, int dateBlock, int dauertMin, DateTime dateOfReport) 
+        public static void InsertActivityTable(string id, string hauptText, string wochenTag, string name,
+            string fach, string abgabeType, int dateBlock, int dauertMin, DateTime dateOfReport)
             => ExecuteNonQuery($"""
 
             INSERT INTO [dbo].[Activity]
@@ -86,14 +85,14 @@ namespace BerichtsHeft.DataAccess
             """);
 
         private const string SelectSql = @"SELECT
-  [ID], [HauptText], [WochenTag], [Name], [Fach],
-  [AbgabeType], [DateBlock], [Dauertmin], [DateOfReport]
-FROM
-  [dbo].[Activity]";
+        [ID], [HauptText], [WochenTag], [Name], [Fach],
+        [AbgabeType], [DateBlock], [Dauertmin], [DateOfReport]
+        FROM
+        [dbo].[Activity]";
 
         public static DataTable GetActivities()
         {
-            return  Execute<DataTable>(GetActivitiesInternal, SelectSql);
+            return Execute<DataTable>(GetActivitiesInternal, SelectSql);
         }
 
         private static DataTable GetActivitiesInternal(SqlCommand sqlCmd)
@@ -104,9 +103,9 @@ FROM
             return t;
         }
 
-        public static  int GetActivitiyCount()
+        public static int GetActivitiyCount()
         {
-            return  Execute<int>(GetActivityCountInternal, "SELECT COUNT(*) FROM Activity");
+            return Execute<int>(GetActivityCountInternal, "SELECT COUNT(*) FROM Activity");
 
         }
 
