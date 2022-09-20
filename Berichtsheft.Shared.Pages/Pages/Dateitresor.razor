@@ -9,18 +9,6 @@
 <h4>Dateitresor</h4>
 <h5>Anzahl Einträge: @(Db.GetActivitiyCount())</h5>
 
-@foreach (DataRow row in Db.GetActivities().Rows)
-{
-	string id = (string)row["ID"];
-	DateTime dateTime = (DateTime)row["DateOfReport"];
-	string abgebetype  = (string)row["AbgabeType"];
-	string haupttext = (string)row["HauptText"];
-	int dauertmin = (int)row["Dauertmin"];
-	int dateblock = (int)row["Dateblock"];
-	string wochentag = (string)row["WochenTag"];
-	string name = (string)row["Name"];
-	string subject = (string)row["Fach"];
-	}
 @*@foreach (DataRow row in Db.GetActivities().Rows)
 {
 	string id = (string)row["ID"];
@@ -36,7 +24,7 @@
 *@
 <div id="box">
 	<input type="search" name="search" placeholder="Suchen die Fächer" @bind-value="SubjectPattern">
-   <div id="search"></div>
+	<div id="search"></div>
 </div>
 <table class="table">
 	<thead>
@@ -55,19 +43,31 @@
 		</tr>
 	</thead>
 	<tbody>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
+		<tr>
+			@foreach (DataRow row in Db.GetActivities().Rows)
+			{
+				string id = (string)row["ID"];
+				DateTime dateTime = (DateTime)row["DateOfReport"];
+				string abgebetype = (string)row["AbgabeType"];
+				string haupttext = (string)row["HauptText"];
+				int dauertmin = (int)row["Dauertmin"];
+				int dateblock = (int)row["Dateblock"];
+				string wochentag = (string)row["WochenTag"];
+				string name = (string)row["Name"];
+				string subject = (string)row["Fach"];
+				<td>@id</td>
+				<td>@dateTime</td>
+				<td>@abgebetype</td>
+				<td>@haupttext</td>
+				<td>@dateblock</td>
+				<td>@dauertmin</td>
+				<td>@wochentag</td>
+				<td>@name</td>
+				<td>@subject</td>
 				@*<td><button class="btn btn-danger" @onclick="(() => Activity.Delete())">löschen</button></td>
-				<td><button class="btn btn-danger" @onclick="(() => Change())">veränden</button></td>*@
-			</tr>
+			<td><button class="btn btn-danger" @onclick="(() => Change())">veränden</button></td>*@
+			}
+		</tr>
 
 	</tbody>
 </table>
@@ -78,9 +78,9 @@
 	{
 		BerichtsHeft.DataAccess.Db.SelectActivityTable();
 	}
-	public  void Change(Activity activityChange)
-	{		
+	public void Change(Activity activityChange)
+	{
 		NavigationManager.NavigateTo($"activityform/{activityChange.ID}");
 		//DateiInfo.Activities.Remove(activityChange);
-	}	
+	}
 }
