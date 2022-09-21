@@ -96,17 +96,17 @@ namespace BerichtsHeft.DataAccess
         /// <param name="fach"></param>
         /// <param name="hauptTextPattern">Sucht nach Activities, die diese Zeichenkette enthalten</param>
         /// <returns></returns>
-        public static DataTable GetActivities(string fach = null, string HauptTextPattern = null)
+        public static DataTable GetActivities(string fach = null, string HauptTextPattern = null, string andOrOr = "and")
         {
             //return Execute<DataTable>(GetActivitiesInternal, SelectSql);
 
             return Execute<DataTable>(new Func<SqlCommand, DataTable>((cmd) =>
             {
-                return GetActivitiesInternal(cmd, fach, HauptTextPattern);
+                return GetActivitiesInternal(cmd, fach, HauptTextPattern, andOrOr);
             }), SelectSql);
         }
 
-        private static DataTable GetActivitiesInternal(SqlCommand sqlCmd, string fach = null, string hauptTextPattern = null)
+        private static DataTable GetActivitiesInternal(SqlCommand sqlCmd, string fach = null, string hauptTextPattern = null, string andOrOr = "and")
 
         {
             sqlCmd.CommandText = SelectSql;
@@ -119,7 +119,7 @@ namespace BerichtsHeft.DataAccess
                 fachSql = "Fach = @Fach";
                 sqlCmd.Parameters.Add("Fach", SqlDbType.VarChar, 255).Value = fach;
             }
-            
+
             //Haupttext
             hauptTextPattern = TrimText(hauptTextPattern);
             string hauptTextSql = null;
@@ -129,8 +129,11 @@ namespace BerichtsHeft.DataAccess
                 hauptTextSql = "HauptText LIKE @HauptTextPattern";
                 sqlCmd.Parameters.Add("HauptTextPattern", SqlDbType.VarChar, 255).Value = hauptTextPattern;
             }
-
-            string logic = "AND";
+                 string logic = "AND";
+            if (andOrOr == "or")
+            {
+                logic = "OR";
+            }
             string whereSql = "";
             if (fachSql != null)
             {
@@ -155,7 +158,7 @@ namespace BerichtsHeft.DataAccess
             }
 
             sqlCmd.CommandText = SelectSql + whereSql;
-            
+
             SqlDataAdapter adp = new SqlDataAdapter(sqlCmd);
             DataTable t = new DataTable();
             adp.Fill(t);
@@ -185,7 +188,7 @@ namespace BerichtsHeft.DataAccess
         {
             sqlCmd.Parameters.Add("HauptTextPattern", SqlDbType.VarChar, 255).Value = hauptTextPattern;
         }
-        
+
         public static int GetActivitiyCount()
         {
             return Execute<int>(GetActivityCountInternal, "SELECT COUNT(*) FROM Activity");
