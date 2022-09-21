@@ -113,28 +113,28 @@ namespace BerichtsHeft.DataAccess
 
             if (fach != null && fach != "" && (hauptTextPattern == null || hauptTextPattern == ""))
             {
-                fach = fach.Trim();
+                FachTrim(fach);
                 sqlCmd.CommandText = sqlCmd.CommandText + " WHERE Fach = @Fach";
-                sqlCmd.Parameters.Add("Fach", SqlDbType.VarChar, 255).Value = fach;
+                AddFach(sqlCmd, fach);
             }
             if (hauptTextPattern != null && hauptTextPattern != "" && (fach == null || fach == ""))
             {
-                hauptTextPattern = "%" + hauptTextPattern + "%";
+                HauptTextC(hauptTextPattern);
                 sqlCmd.CommandText = sqlCmd.CommandText + " WHERE HauptText LIKE @HauptTextPattern";
-                sqlCmd.Parameters.Add("HauptTextPattern", SqlDbType.VarChar, 255).Value = hauptTextPattern;
+                AddHauptText(sqlCmd, hauptTextPattern);
             }
 
             if (fach != null && fach != "" && hauptTextPattern != null && hauptTextPattern != "")
             {
-                fach = fach.Trim();
-                hauptTextPattern = "%" + hauptTextPattern + "%";
+                FachTrim(fach);
+                HauptTextC(hauptTextPattern);
                 sqlCmd.CommandText = sqlCmd.CommandText + " WHERE Fach = @Fach AND HauptText LIKE @HauptTextPattern";
-                sqlCmd.Parameters.Add("Fach", SqlDbType.VarChar, 255).Value = fach;
-                sqlCmd.Parameters.Add("HauptTextPattern", SqlDbType.VarChar, 255).Value = hauptTextPattern;
+                AddFach(sqlCmd, fach);
+                AddHauptText(sqlCmd, hauptTextPattern);
             }
             if (fach == null && fach == "" && hauptTextPattern == null && hauptTextPattern == "")
             {
-                sqlCmd.CommandText = sqlCmd.CommandText;
+                SCommand(sqlCmd);
             }
             
             SqlDataAdapter adp = new SqlDataAdapter(sqlCmd);
@@ -143,9 +143,25 @@ namespace BerichtsHeft.DataAccess
             return t;
         }
 
-        public static void Scommand(SqlCommand sqlCmd, )
+        public static void FachTrim(string fach)
         {
-
+            fach = fach.Trim();
+        }
+        public static void HauptTextC(string hauptTextPattern)
+        {
+            hauptTextPattern = "%" + hauptTextPattern + "%";
+        }
+        public static void SCommand(SqlCommand sqlCmd)
+        {
+            sqlCmd.CommandText = sqlCmd.CommandText;
+        }
+        public static void AddFach(SqlCommand sqlCmd, string fach)
+        {
+            sqlCmd.Parameters.Add("Fach", SqlDbType.VarChar, 255).Value = fach;
+        }
+        public static void AddHauptText(SqlCommand sqlCmd, string hauptTextPattern)
+        {
+            sqlCmd.Parameters.Add("HauptTextPattern", SqlDbType.VarChar, 255).Value = hauptTextPattern;
         }
 
 
