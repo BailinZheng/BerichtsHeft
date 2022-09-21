@@ -83,7 +83,7 @@ namespace BerichtsHeft.DataAccess
             FROM
               [dbo].[Activity]
             """);
-        
+
         private const string SelectSql = @"SELECT
         [ID], [HauptText], [WochenTag], [Name], [Fach],
         [AbgabeType], [DateBlock], [Dauertmin], [DateOfReport]
@@ -107,29 +107,48 @@ namespace BerichtsHeft.DataAccess
         }
 
         private static DataTable GetActivitiesInternal(SqlCommand sqlCmd, string fach = null, string hauptTextPattern = null)
-        
-        
+
         {
             sqlCmd.CommandText = SelectSql;
-            
-            if (fach != null && fach != "")
+
+            if (fach != null && fach != "" && (hauptTextPattern == null || hauptTextPattern == ""))
             {
                 fach = fach.Trim();
                 sqlCmd.CommandText = sqlCmd.CommandText + " WHERE Fach = @Fach";
-                sqlCmd.Parameters.Add("Fach", SqlDbType.VarChar, 255).Value = fach;                
+                sqlCmd.Parameters.Add("Fach", SqlDbType.VarChar, 255).Value = fach;
             }
-
-            if (hauptTextPattern != null && hauptTextPattern != "")
+            if (hauptTextPattern != null && hauptTextPattern != "" && (fach == null || fach == ""))
             {
                 hauptTextPattern = "%" + hauptTextPattern + "%";
                 sqlCmd.CommandText = sqlCmd.CommandText + " WHERE HauptText LIKE @HauptTextPattern";
-                sqlCmd.Parameters.Add("HauptText", SqlDbType.VarChar, 255).Value = hauptTextPattern;
+                sqlCmd.Parameters.Add("HauptTextPattern", SqlDbType.VarChar, 255).Value = hauptTextPattern;
             }
+
+            if (fach != null && fach != "" && hauptTextPattern != null && hauptTextPattern != "")
+            {
+                fach = fach.Trim();
+                hauptTextPattern = "%" + hauptTextPattern + "%";
+                sqlCmd.CommandText = sqlCmd.CommandText + " WHERE Fach = @Fach AND HauptText LIKE @HauptTextPattern";
+                sqlCmd.Parameters.Add("Fach", SqlDbType.VarChar, 255).Value = fach;
+                sqlCmd.Parameters.Add("HauptTextPattern", SqlDbType.VarChar, 255).Value = hauptTextPattern;
+            }
+            if (fach == null && fach == "" && hauptTextPattern == null && hauptTextPattern == "")
+            {
+                sqlCmd.CommandText = sqlCmd.CommandText;
+            }
+            
             SqlDataAdapter adp = new SqlDataAdapter(sqlCmd);
             DataTable t = new DataTable();
             adp.Fill(t);
             return t;
         }
+
+        public static void Scommand(SqlCommand sqlCmd, )
+        {
+
+        }
+
+
 
         public static int GetActivitiyCount()
         {
