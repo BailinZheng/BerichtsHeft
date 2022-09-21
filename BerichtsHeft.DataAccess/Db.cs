@@ -111,41 +111,63 @@ namespace BerichtsHeft.DataAccess
         {
             sqlCmd.CommandText = SelectSql;
 
-            if (fach != null && fach != "" && (hauptTextPattern == null || hauptTextPattern == ""))
+            //Fach
+            fach = TrimText(fach);
+            string fachSql = null;
+            if (string.IsNullOrEmpty(fach) == false)
             {
-                FachTrim(fach);
-                sqlCmd.CommandText = sqlCmd.CommandText + " WHERE Fach = @Fach";
-                AddFach(sqlCmd, fach);
+                fachSql = "Fach = @Fach";
+                sqlCmd.Parameters.Add("Fach", SqlDbType.VarChar, 255).Value = fach;
             }
-            if (hauptTextPattern != null && hauptTextPattern != "" && (fach == null || fach == ""))
+            
+            //Haupttext
+            hauptTextPattern = TrimText(hauptTextPattern);
+            string hauptTextSql = null;
+            if (string.IsNullOrEmpty(hauptTextPattern) == false)
             {
-                HauptTextC(hauptTextPattern);
-                sqlCmd.CommandText = sqlCmd.CommandText + " WHERE HauptText LIKE @HauptTextPattern";
-                AddHauptText(sqlCmd, hauptTextPattern);
+                hauptTextPattern = $"%{hauptTextPattern}%";
+                hauptTextSql = "HauptText LIKE @HauptTextPattern";
+                sqlCmd.Parameters.Add("HauptTextPattern", SqlDbType.VarChar, 255).Value = hauptTextPattern;
             }
 
-            if (fach != null && fach != "" && hauptTextPattern != null && hauptTextPattern != "")
+            string logic = "AND";
+            string whereSql = "";
+            if (fachSql != null)
             {
-                FachTrim(fach);
-                HauptTextC(hauptTextPattern);
-                sqlCmd.CommandText = sqlCmd.CommandText + " WHERE Fach = @Fach AND HauptText LIKE @HauptTextPattern";
-                AddFach(sqlCmd, fach);
-                AddHauptText(sqlCmd, hauptTextPattern);
+                whereSql = fachSql;
             }
-            if (fach == null && fach == "" && hauptTextPattern == null && hauptTextPattern == "")
+
+            if (hauptTextSql != null)
             {
-                SCommand(sqlCmd);
+                if (whereSql == "")
+                {
+                    whereSql = hauptTextSql;
+                }
+                else
+                {
+                    whereSql = $"{whereSql} {logic} {hauptTextSql}";
+                }
             }
+
+            if (whereSql != "")
+            {
+                whereSql = $" WHERE {whereSql}";
+            }
+
+            sqlCmd.CommandText = SelectSql + whereSql;
             
             SqlDataAdapter adp = new SqlDataAdapter(sqlCmd);
             DataTable t = new DataTable();
             adp.Fill(t);
             return t;
         }
-
-        public static void FachTrim(string fach)
+        private static string TrimText(string textToTrim)
         {
-            fach = fach.Trim();
+            if (textToTrim != null)
+            {
+                return textToTrim.Trim();
+            }
+            return null;
         }
         public static void HauptTextC(string hauptTextPattern)
         {
@@ -163,13 +185,10 @@ namespace BerichtsHeft.DataAccess
         {
             sqlCmd.Parameters.Add("HauptTextPattern", SqlDbType.VarChar, 255).Value = hauptTextPattern;
         }
-
-
-
+        
         public static int GetActivitiyCount()
         {
             return Execute<int>(GetActivityCountInternal, "SELECT COUNT(*) FROM Activity");
-
         }
 
         private static int GetActivityCountInternal(SqlCommand sqlCmd)
