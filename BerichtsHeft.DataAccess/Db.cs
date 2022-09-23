@@ -82,6 +82,7 @@ namespace BerichtsHeft.DataAccess
               [AbgabeType], [DateBlock], [Dauertmin], [DateOfReport]
             FROM
               [dbo].[Activity]
+            ORDER BY DateOfReport ASC
             """);
 
         private const string SelectSql = @"SELECT
@@ -172,23 +173,6 @@ namespace BerichtsHeft.DataAccess
             }
             return null;
         }
-        public static void HauptTextC(string hauptTextPattern)
-        {
-            hauptTextPattern = "%" + hauptTextPattern + "%";
-        }
-        public static void SCommand(SqlCommand sqlCmd)
-        {
-            sqlCmd.CommandText = sqlCmd.CommandText;
-        }
-        public static void AddFach(SqlCommand sqlCmd, string fach)
-        {
-            sqlCmd.Parameters.Add("Fach", SqlDbType.VarChar, 255).Value = fach;
-        }
-        public static void AddHauptText(SqlCommand sqlCmd, string hauptTextPattern)
-        {
-            sqlCmd.Parameters.Add("HauptTextPattern", SqlDbType.VarChar, 255).Value = hauptTextPattern;
-        }
-
         public static int GetActivitiyCount()
         {
             return Execute<int>(GetActivityCountInternal, "SELECT COUNT(*) FROM Activity");

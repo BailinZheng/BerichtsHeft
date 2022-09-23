@@ -9,8 +9,4 @@
   <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Platz.SqlForms" Version="0.4.0" />
-  </ItemGroup>
 </Project>
