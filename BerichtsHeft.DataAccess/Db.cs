@@ -60,14 +60,14 @@ namespace BerichtsHeft.DataAccess
             return Execute<bool>((cmd) =>
             {
                 cmd.Parameters.Add("HauptText", SqlDbType.NVarChar, 255).Value = a.HauptText;
-                cmd.Parameters.Add("WochenTag", SqlDbType.NVarChar, 10 ).Value = a.WochenTag;
-                cmd.Parameters.Add("Name", SqlDbType.NVarChar, 255 ).Value = a.Name;
-                cmd.Parameters.Add("Fach", SqlDbType.NVarChar, 255 ).Value = a.Fach;
-                cmd.Parameters.Add("AbgabeType", SqlDbType.NVarChar, 255 ).Value = a.AbgabeType;
+                cmd.Parameters.Add("WochenTag", SqlDbType.NVarChar, 10).Value = a.WochenTag;
+                cmd.Parameters.Add("Name", SqlDbType.NVarChar, 255).Value = a.Name;
+                cmd.Parameters.Add("Fach", SqlDbType.NVarChar, 255).Value = a.Fach;
+                cmd.Parameters.Add("AbgabeType", SqlDbType.NVarChar, 255).Value = a.AbgabeType;
                 cmd.Parameters.Add("DateBlock", SqlDbType.Int).Value = a.DateBlock;
                 cmd.Parameters.Add("Dauertmin", SqlDbType.Int).Value = a.DauertMin;
                 cmd.Parameters.Add("DateOfReport", SqlDbType.DateTime).Value = a.DateOfReport;
-                cmd.Parameters.Add("ID", SqlDbType.VarChar, 40 ).Value = a.ID;
+                cmd.Parameters.Add("ID", SqlDbType.VarChar, 40).Value = a.ID;
 
                 int affectedResults = cmd.ExecuteNonQuery();
                 return (affectedResults == 1);
