@@ -12,17 +12,19 @@ namespace BerichtsHeft.Client.Pages
         [Parameter]
         public string ActivityID { get; set; }
         public Activity Datei = new Activity();
-
         
         public void changeanmelden()
         {
             NavMan.NavigateTo("dateitresor");
         }
+        public void UpdateToDb()
+        {
+            BerichtsHeft.DataAccess.Db.UpdateActivity(Datei);
+            NavMan.NavigateTo("dateitresor");
+        }
         public void SaveToDb()
         {
-            BerichtsHeft.DataAccess.Db.InsertActivityTable(
-            Datei.ID, Datei.HauptText, Datei.WochenTag, Datei.Name, Datei.Fach,
-            Datei.AbgabeType, Datei.DateBlock, Datei.DauertMin, Datei.DateOfReport);
+            BerichtsHeft.DataAccess.Db.InsertActivity(Datei);
             NavMan.NavigateTo($"dateitresor");
         }
         protected override void OnInitialized()

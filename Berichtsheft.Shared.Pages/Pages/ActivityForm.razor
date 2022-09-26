@@ -2,7 +2,7 @@
 @page "/activityform/"
 @using BerichtsHeft.Client.Pages
 @inherits ActivityFormClass
-
+@using BerichtsHeft.DataAccess
 
 <PageTitle>Einreichung Seite</PageTitle>
 
@@ -76,13 +76,9 @@
 	</select>
 </EditForm>
 
-@*@if (ActivityID == null)
-{
-	<button type="submit" class="btn btn-primary" @onclick="activityanmelden">Hinzufügen</button>
-}*@
 @if (ActivityID != null)
 {
-	<button type="submit" class="btn btn-primary" @onclick="changeanmelden">Fertig</button>
+	<button type="submit" class="btn btn-primary" @onclick="UpdateToDb">Fertig</button>
 }
 
 @if (ActivityID == null)

@@ -55,41 +55,65 @@ namespace BerichtsHeft.DataAccess
             }, "DELETE FROM [Activity] WHERE ID=@ID");
         }
 
-        public static bool UpdateActivity(Activity a)
+        public static bool UpdateActivity(BerichtsHeft.Shared.Activity a)
         {
             return Execute<bool>((cmd) =>
             {
-                //cmd.Parameters.Add("ID", SqlDbType.VarChar, 40).Value = id;
+                cmd.Parameters.Add("HauptText", SqlDbType.NVarChar, 255).Value = a.HauptText;
+                cmd.Parameters.Add("WochenTag", SqlDbType.NVarChar, 10 ).Value = a.WochenTag;
+                cmd.Parameters.Add("Name", SqlDbType.NVarChar, 255 ).Value = a.Name;
+                cmd.Parameters.Add("Fach", SqlDbType.NVarChar, 255 ).Value = a.Fach;
+                cmd.Parameters.Add("AbgabeType", SqlDbType.NVarChar, 255 ).Value = a.AbgabeType;
+                cmd.Parameters.Add("DateBlock", SqlDbType.Int).Value = a.DateBlock;
+                cmd.Parameters.Add("Dauertmin", SqlDbType.Int).Value = a.DauertMin;
+                cmd.Parameters.Add("DateOfReport", SqlDbType.DateTime).Value = a.DateOfReport;
+                cmd.Parameters.Add("ID", SqlDbType.VarChar, 40 ).Value = a.ID;
 
-                return true;
-            }, "UPDATE ...");
+                int affectedResults = cmd.ExecuteNonQuery();
+                return (affectedResults == 1);
+            }, @"UPDATE [dbo].[Activity]  
+            SET [HauptText] = @HauptText, 
+            [WochenTag] = @WochenTag, 
+            [Name] = @Name,
+            [Fach] = @Fach,
+            [AbgabeType] = @AbgabeType,
+            [DateBlock] = @DateBlock,
+            [Dauertmin] = @Dauertmin,
+            [DateOfReport] = @DateOfReport
+            WHERE [ID] = @ID
+            ");
         }
 
-        public static bool InsertActivity(Activity a)
+        public static bool InsertActivity(BerichtsHeft.Shared.Activity a)
         {
             return Execute<bool>((cmd) =>
             {
+                cmd.Parameters.Add("HauptText", SqlDbType.NVarChar, 255).Value = a.HauptText;
+                cmd.Parameters.Add("WochenTag", SqlDbType.NVarChar, 10).Value = a.WochenTag;
+                cmd.Parameters.Add("Name", SqlDbType.NVarChar, 255).Value = a.Name;
+                cmd.Parameters.Add("Fach", SqlDbType.NVarChar, 255).Value = a.Fach;
+                cmd.Parameters.Add("AbgabeType", SqlDbType.NVarChar, 255).Value = a.AbgabeType;
+                cmd.Parameters.Add("DateBlock", SqlDbType.Int).Value = a.DateBlock;
+                cmd.Parameters.Add("Dauertmin", SqlDbType.Int).Value = a.DauertMin;
+                cmd.Parameters.Add("DateOfReport", SqlDbType.DateTime).Value = a.DateOfReport;
+                cmd.Parameters.Add("ID", SqlDbType.VarChar, 40).Value = a.ID;
                 //cmd.Parameters.Add("ID", SqlDbType.VarChar, 40).Value = id;
-
-                return true;
-            }, "INSERT ...");
+                int affectedResults = cmd.ExecuteNonQuery();
+                return (affectedResults == 1);
+            }, @"INSERT INTO [dbo].[Activity]
+(
+  [ID], [HauptText], [WochenTag], [Name],
+  [Fach], [AbgabeType], [DateBlock], [Dauertmin], [DateOfReport]
+)
+VALUES
+(
+  @ID, @HauptText, @WochenTag, @Name,
+  @Fach , @AbgabeType , @DateBlock, @Dauertmin, @DateOfReport
+)
+");
         }
 
 
-        public static void UpdateActivityTable(string id) => ExecuteNonQuery("""
-            UPDATE [dbo].[Activity]
-            SET [ID] = 1,
-                [HauptText] = 2,
-                [WochenTag] = 3,
-                [Name] = 4,
-                [Fach] = 5,
-                [AbgabeType] = 6,
-                [DateBlock] = 7,
-                [Dauertmin] = 8,
-                [DateOfReport] = 9,
-            WHERE <Search Conditions,>
-            """
-            /*NavigationManager.NavigateTo($"activityform/{activityChange.ID}");*/);
 
         public static BerichtsHeft.Shared.Activity GetActivity(string id)
         {
@@ -132,23 +156,6 @@ namespace BerichtsHeft.DataAccess
   FROM [dbo].[Activity]
 WHERE ID=@ID");
         }
-
-        public static void InsertActivityTable(string id, string hauptText, string wochenTag, string name,
-            string fach, string abgabeType, int dateBlock, int dauertMin, DateTime dateOfReport)
-            => ExecuteNonQuery($"""
-
-            INSERT INTO [dbo].[Activity]
-            (
-              [ID], [HauptText], [WochenTag], [Name],
-              [Fach], [AbgabeType], [DateBlock], [Dauertmin], [DateOfReport]
-            )
-            VALUES
-            (
-              '{id}', '{hauptText}', '{wochenTag}', '{name}',
-              '{fach}', '{abgabeType}', {dateBlock}, {dauertMin}, '{dateOfReport: yyyyMMdd}'
-              -- google for Sql Parameters
-            )
-            """);
 
         private const string SelectSql = @"SELECT
         [ID], [HauptText], [WochenTag], [Name], [Fach],
@@ -195,7 +202,7 @@ WHERE ID=@ID");
                 hauptTextSql = "HauptText LIKE @HauptTextPattern";
                 sqlCmd.Parameters.Add("HauptTextPattern", SqlDbType.VarChar, 255).Value = hauptTextPattern;
             }
-                 string logic = "AND";
+            string logic = "AND";
             if (andOrOr == "or")
             {
                 logic = "OR";
