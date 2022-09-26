@@ -1,4 +1,5 @@
-﻿using BerichtsHeft.Shared;
+﻿using BerichtsHeft.DataAccess;
+using BerichtsHeft.Shared;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 namespace BerichtsHeft.Client.Pages
@@ -7,18 +8,22 @@ namespace BerichtsHeft.Client.Pages
     {
         [Inject]
         public NavigationManager NavMan { get; set; }
+
         [Parameter]
         public string ActivityID { get; set; }
         public Activity Datei = new Activity();
 
-        public void activityanmelden()
-        {
-            Activity.Add(Datei);
-            NavMan.NavigateTo("dateitresor");
-        }
+        
         public void changeanmelden()
         {
             NavMan.NavigateTo("dateitresor");
+        }
+        public void SaveToDb()
+        {
+            BerichtsHeft.DataAccess.Db.InsertActivityTable(
+            Datei.ID, Datei.HauptText, Datei.WochenTag, Datei.Name, Datei.Fach,
+            Datei.AbgabeType, Datei.DateBlock, Datei.DauertMin, Datei.DateOfReport);
+            NavMan.NavigateTo($"dateitresor");
         }
         protected override void OnInitialized()
         {
@@ -26,7 +31,7 @@ namespace BerichtsHeft.Client.Pages
 
             if (ActivityID != null)
             {
-                Datei = Activity.GetDateiInfo(ActivityID);
+                Datei = Db.GetActivity(ActivityID);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 
 namespace BerichtsHeft.DataAccess
 {
@@ -42,7 +43,38 @@ namespace BerichtsHeft.DataAccess
             )
             """);
 
-        public static void DeleteActivityTable(string id) => ExecuteNonQuery($"DELETE FROM [dbo].[Activity] WHERE ID='{id}'");
+        public static bool DeleteActivityTable(string id)
+        {
+            return Execute<bool>((cmd) =>
+            {
+                cmd.Parameters.Add("ID", SqlDbType.VarChar, 40).Value = id;
+                int affectedResults = cmd.ExecuteNonQuery();
+
+                return (affectedResults == 1);
+
+            }, "DELETE FROM [Activity] WHERE ID=@ID");
+        }
+
+        public static bool UpdateActivity(Activity a)
+        {
+            return Execute<bool>((cmd) =>
+            {
+                //cmd.Parameters.Add("ID", SqlDbType.VarChar, 40).Value = id;
+
+                return true;
+            }, "UPDATE ...");
+        }
+
+        public static bool InsertActivity(Activity a)
+        {
+            return Execute<bool>((cmd) =>
+            {
+                //cmd.Parameters.Add("ID", SqlDbType.VarChar, 40).Value = id;
+
+                return true;
+            }, "INSERT ...");
+        }
+
 
         public static void UpdateActivityTable(string id) => ExecuteNonQuery("""
             UPDATE [dbo].[Activity]
@@ -59,6 +91,48 @@ namespace BerichtsHeft.DataAccess
             """
             /*NavigationManager.NavigateTo($"activityform/{activityChange.ID}");*/);
 
+        public static BerichtsHeft.Shared.Activity GetActivity(string id)
+        {
+            return Execute<BerichtsHeft.Shared.Activity>((cmd) =>
+            {
+                BerichtsHeft.Shared.Activity a = new BerichtsHeft.Shared.Activity();
+
+                cmd.Parameters.Add("ID", SqlDbType.VarChar, 40).Value = id;
+
+                using (IDataReader r = cmd.ExecuteReader())
+                {
+                    if (r.Read())
+                    {
+                        a.ID = r.GetString(0);
+                        a.HauptText = r.GetString(1);
+                        a.WochenTag = r.GetString(2);
+                        a.Name = r.GetString(3);
+                        a.Fach = r.GetString(4);
+                        a.AbgabeType = r.GetString(5);
+                        a.DateBlock = r.GetInt32(6);
+                        a.DauertMin = r.GetInt32(7);
+                        a.DateOfReport = r.GetDateTime(8);
+                    }
+                    else
+                    {
+                        throw new Exception($"Datensatz mit ID='{id}' existiert nicht!");
+                    }
+                }
+
+                return a;
+            }, @"SELECT [ID]
+      ,[HauptText]
+      ,[WochenTag]
+      ,[Name]
+      ,[Fach]
+      ,[AbgabeType]
+      ,[DateBlock]
+      ,[DauertMin]
+      ,[DateOfReport]
+  FROM [dbo].[Activity]
+WHERE ID=@ID");
+        }
+
         public static void InsertActivityTable(string id, string hauptText, string wochenTag, string name,
             string fach, string abgabeType, int dateBlock, int dauertMin, DateTime dateOfReport)
             => ExecuteNonQuery($"""
@@ -74,15 +148,6 @@ namespace BerichtsHeft.DataAccess
               '{fach}', '{abgabeType}', {dateBlock}, {dauertMin}, '{dateOfReport: yyyyMMdd}'
               -- google for Sql Parameters
             )
-            """);
-
-        public static void SelectActivityTable() => ExecuteNonQuery("""
-            SELECT
-              [ID], [HauptText], [WochenTag], [Name], [Fach],
-              [AbgabeType], [DateBlock], [Dauertmin], [DateOfReport]
-            FROM
-              [dbo].[Activity]
-            ORDER BY DateOfReport ASC
             """);
 
         private const string SelectSql = @"SELECT

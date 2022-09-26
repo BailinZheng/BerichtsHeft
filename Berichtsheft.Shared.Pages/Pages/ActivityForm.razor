@@ -2,18 +2,17 @@
 @page "/activityform/"
 @using BerichtsHeft.Client.Pages
 @inherits ActivityFormClass
-@inject NavigationManager NavigationManager
 
 
 <PageTitle>Einreichung Seite</PageTitle>
 
 <h4>Einreichung Seite</h4>
-@if (Datei.DateBlock == 0)
+@if (Datei != null && Datei.DateBlock == 0)
 {
 	Datei.WochenTag = "Montag";
 	Datei.AbgabeType = "eine Woche im Unternehmen";
 	Datei.DateBlock = 1;
-	Datei.Subject = "LF1";
+	Datei.Fach = "LF1";
 }
 
 <EditForm Model="Datei">
@@ -21,10 +20,9 @@
 		<label for="DateOfReport">Meldezeit:</label>
 		<InputDate id="DateOfReport" @bind-Value="Datei.DateOfReport" class="form-control"></InputDate>
 	</div>
-
 	<div class="form-group">
 		<label for="Dauertmin">Wie lange hat diese Lektion gedauert?</label>
-		<InputNumber id="Dauertmin" @bind-Value="Datei.Dauertmin" class="form-control"></InputNumber> <h5>min</h5>
+		<InputNumber id="Dauertmin" @bind-Value="Datei.DauertMin" class="form-control"></InputNumber> <h5>min</h5>
 	</div>
 
 	<div class="form-group">
@@ -66,7 +64,7 @@
 	<br />
 	<label for="Subject">wählst du das Fach:</label>
 	<br />
-	<select name="Subject" id="Subject" @bind="Datei.Subject">
+	<select name="Fach" id="Subject" @bind="Datei.Fach">
 		<option>LF1</option>
 		<option>LF2</option>
 		<option>LF3</option>
@@ -93,11 +91,5 @@
 }
 @code
 {
-	private void SaveToDb()
-	{
-		BerichtsHeft.DataAccess.Db.InsertActivityTable(
-		Datei.ID, Datei.HauptText, Datei.WochenTag, Datei.Name, Datei.Subject,
-		Datei.AbgabeType, Datei.DateBlock, Datei.Dauertmin, Datei.DateOfReport);
-		NavigationManager.NavigateTo($"dateitresor");
-	}
+	
 }
